@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <title>Ordem de Serviço #{{ ordem.id }}</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+            .header { text-align: center; margin-bottom: 20px; }
+            .content { margin: 20px 0; }
+            .section { margin-bottom: 15px; }
+            .section-title { font-weight: bold; margin-bottom: 5px; }
+            .signature { margin-top: 50px; border-top: 1px solid #000; width: 300px; }
+            .page-break { page-break-after: always; }
+            @page {
+                size: A4;
+                margin: 2cm;
+            }
+        </style>
+    </head>
+    <body>
+    
+        <!-- Header com nome da empresa -->
+        <div class="header">
+            <h1>{{ ordem.empresa.nome_fantasia|default:"Nome da Empresa" }}</h1>
+            <p>
+                {{ ordem.empresa.endereco|default:"Endereço da Empresa" }}<br>
+                {{ ordem.empresa.telefone|default:"(00) 0000-0000" }}<br>
+                {{ ordem.empresa.email|default:"email@empresa.com" }}
+            </p>
+        </div>
+    
+        <!-- Dados do Cliente -->
+        <div class="content">
+            <div class="section">
+                <div class="section-title">Dados do Cliente</div>
+                <div>Nome: {{ ordem.cliente.nome }} {{ ordem.cliente.sobrenome }}</div>
+                <div>Endereço: {{ ordem.cliente.endereco|default:"Endereço não informado" }}</div>
+                <div>Telefone: {{ ordem.cliente.telefone|default:"-" }} / Celular: {{ ordem.cliente.celular|default:"-" }}</div>
+            </div>
+        <!-- Dados do Equipamento -->
+        <div class="section">
+            <div class="section-title">Dados do Equipamento</div>
+            <div>Modelo: {{ ordem.equipamento.modelo }}</div>
+            <div>Número de Série: {{ ordem.equipamento.numero_serie }}</div>
+            <div>Data de Entrada: {{ ordem.data_entrada|date:"d/m/Y" }}</div>
+            <div>Acessórios: {{ ordem.acessorios|default:"Nenhum" }}</div>
+            <div>Observações: {{ ordem.observacoes|default:"Nenhuma" }}</div>
+        </div>
+
+        <!-- Serviço -->
+        <div class="section">
+            <div class="section-title">Serviço</div>
+            <div>Status: {{ ordem.get_status_display }}</div>
+            {% if ordem.descricao_servico %}
+                <div>Descrição: {{ ordem.descricao_servico }}</div>
+            {% endif %}
+            {% if ordem.valor_servico %}
+                <div>Valor: R$ {{ ordem.valor_servico }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Observações da empresa -->
+        <div class="section">
+            <div class="section-title">Observações da Empresa</div>
+            <div>{{ ordem.empresa.observacao_retirada }}</div>
+        </div>
+
+        <!-- Assinatura do cliente -->
+        <div class="signature">
+            <p>Assinatura do Cliente</p>
+        </div>
+    </div>
+
+    <!-- Quebra de página para a via 2 -->
+    <div class="page-break"></div>
+
+    <!-- Via 2 - Retorno -->
+    <div class="content">
+        <div class="header">
+            <h1>{{ ordem.empresa.nome_fantasia }}</h1>
+            <p>{{ ordem.empresa.endereco }}<br>
+               {{ ordem.empresa.telefone }}<br>
+               {{ ordem.empresa.email }}
+            </p>
+        </div>
+
+        <!-- Dados do Cliente (Via 2) -->
+        <div class="section">
+            <div class="section-title">Dados do Cliente</div>
+            <div>Nome: {{ ordem.cliente.nome }} {{ ordem.cliente.sobrenome }}</div>
+        </div>
+
+        <!-- Dados do Equipamento (Via 2) -->
+        <div class="section">
+            <div class="section-title">Dados do Equipamento</div>
+            <div>Modelo: {{ ordem.equipamento.modelo }}</div>
+            <div>Número de Série: {{ ordem.equipamento.numero_serie }}</div>
+        </div>
+
+        <!-- Assinatura do cliente (Via 2) -->
+        <div class="signature">
+            <p>Assinatura do Cliente</p>
+        </div>
+    </div>
+</body>
+</html>

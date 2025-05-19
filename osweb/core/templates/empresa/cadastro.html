@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block title %}Cadastro de Empresa{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>Cadastro de Empresa</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <h5>Dados de Acesso</h5>
+                    <div class="form-group">
+                        <label for="id_username">Usuário:</label>
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.username.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_email">E-mail:</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.email.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_password1">Senha:</label>
+                        {{ form.password1 }}
+                        {% if form.password1.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.password1.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_password2">Confirmação de Senha:</label>
+                        {{ form.password2 }}
+                        {% if form.password2.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.password2.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <hr>
+                    <h5>Dados da Empresa</h5>
+                    <div class="form-group">
+                        <label for="id_nome_fantasia">Nome Fantasia:</label>
+                        {{ form.nome_fantasia }}
+                        {% if form.nome_fantasia.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.nome_fantasia.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_razao_social">Razão Social:</label>
+                        {{ form.razao_social }}
+                        {% if form.razao_social.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.razao_social.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_cnpj">CNPJ:</label>
+                        {{ form.cnpj }}
+                        {% if form.cnpj.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.cnpj.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_nome_representante">Nome do Representante:</label>
+                        {{ form.nome_representante }}
+                        {% if form.nome_representante.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.nome_representante.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Novos campos adicionados -->
+                    <div class="form-group">
+                        <label for="id_telefone">Telefone:</label>
+                        {{ form.telefone }}
+                        {% if form.telefone.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.telefone.errors }}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">Formato: (DDD) XXXXX-XXXX</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_endereco">Endereço Completo:</label>
+                        {{ form.endereco }}
+                        {% if form.endereco.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.endereco.errors }}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">Rua, número, complemento, bairro, cidade - Estado</small>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+                </form>
+            </div>
+            <div class="card-footer text-center">
+                Já tem uma conta? <a href="{% url 'login' %}">Faça login</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}  <!-- Esta linha estava faltando no seu template original -->

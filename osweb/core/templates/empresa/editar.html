@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Editar Empresa{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h4>Editar Dados da Empresa</h4>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Dados da Empresa</h5>
+                    {{ form.nome_fantasia|as_crispy_field }}
+                    {{ form.razao_social|as_crispy_field }}
+                    {{ form.cnpj|as_crispy_field }}
+                    {{ form.nome_representante|as_crispy_field }}
+                </div>
+                <div class="col-md-6">
+                    <h5>Contato</h5>
+                    {{ form.telefone|as_crispy_field }}
+                    {{ form.endereco|as_crispy_field }}
+                    {{ form.observacao_retirada|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-group mt-4">
+                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                <a href="{% url 'empresa_dashboard' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+$(document).ready(function(){
+    $('[data-mask="00.000.000/0000-00"]').mask('00.000.000/0000-00');
+    $('[data-mask="(00) 0000-0000"]').mask('(00) 0000-0000');
+});
+</script>
+{% endblock %}
+
+{% endblock %}

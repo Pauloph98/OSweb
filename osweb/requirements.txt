@@ -1,0 +1,4 @@
+Django==3.2
+django-widget-tweaks==1.4.8
+django-filter==2.4.0
+WeasyPrint==52.5

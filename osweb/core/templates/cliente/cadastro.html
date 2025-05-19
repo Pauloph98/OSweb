@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Cadastro de Cliente{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>Cadastro de Cliente</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label for="id_nome">Nome:</label>
+                        {{ form.nome }}
+                        {% if form.nome.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.nome.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_sobrenome">Sobrenome:</label>
+                        {{ form.sobrenome }}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_endereco">Endereço:</label>
+                        {{ form.endereco }}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_telefone">Telefone:</label>
+                        {{ form.telefone }}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_celular">Celular:</label>
+                        {{ form.celular }}
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">Salvar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

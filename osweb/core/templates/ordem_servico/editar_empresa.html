@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Editar Ordem de Serviço #{{ ordem.id }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>Editar Ordem de Serviço #{{ ordem.id }}</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label for="id_descricao_servico">Descrição do Serviço:</label>
+                        {{ form.descricao_servico }}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_valor_servico">Valor do Serviço:</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">R$</span>
+                            </div>
+                            {{ form.valor_servico }}
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_status">Status:</label>
+                        {{ form.status }}
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">Salvar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% if request.user.is_empresa %}
+    <a href="{% url 'ordem_servico_edit_empresa' ordem.id %}" class="btn btn-primary">
+        Editar Completo
+    </a>
+{% elif request.user.is_tecnico %}
+    <a href="{% url 'ordem_servico_update_tecnico' ordem.id %}" class="btn btn-warning">
+        Atualizar Status
+    </a>
+{% endif %}

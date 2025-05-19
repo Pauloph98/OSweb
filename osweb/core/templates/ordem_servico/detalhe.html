@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Detalhes da Ordem de Serviço #{{ ordem.id }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Ordem de Serviço #{{ ordem.id }}</h4>
+                    <div>
+                        <a href="{% url 'ordem_servico_update' ordem.id %}" class="btn btn-warning btn-sm">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Informações do Cliente</h5>
+                        <p><strong>Nome:</strong> {{ ordem.cliente.nome }} {{ ordem.cliente.sobrenome }}</p>
+                        <p><strong>Telefone:</strong> {{ ordem.cliente.telefone }}</p>
+                        <p><strong>Email:</strong> {{ ordem.cliente.email }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Informações do Equipamento</h5>
+                        <p><strong>Tipo:</strong> {{ ordem.equipamento.tipo }}</p>
+                        <p><strong>Marca:</strong> {{ ordem.equipamento.marca }}</p>
+                        <p><strong>Modelo:</strong> {{ ordem.equipamento.modelo }}</p>
+                        <p><strong>Número de Série:</strong> {{ ordem.equipamento.numero_serie }}</p>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <h5>Detalhes do Serviço</h5>
+                        <p><strong>Descrição:</strong> {{ ordem.descricao_servico }}</p>
+                        <p><strong>Valor:</strong> R$ {{ ordem.valor_servico }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Status e Datas</h5>
+                        <p>
+                            <strong>Status:</strong>
+                            <span class="badge badge-{% if ordem.status == 'AGUARDANDO' %}warning{% elif ordem.status == 'APROVADO' %}success{% elif ordem.status == 'RECUSADO' %}danger{% else %}info{% endif %}">
+                                {{ ordem.get_status_display }}
+                            </span>
+                        </p>
+                        <p><strong>Data de Entrada:</strong> {{ ordem.data_entrada|date:"d/m/Y" }}</p>
+                        {% if ordem.data_aprovacao %}
+                            <p><strong>Data de Aprovação:</strong> {{ ordem.data_aprovacao|date:"d/m/Y" }}</p>
+                        {% endif %}
+                        {% if ordem.data_entrega %}
+                            <p><strong>Data de Entrega:</strong> {{ ordem.data_entrega|date:"d/m/Y" }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if ordem.observacoes %}
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <h5>Observações</h5>
+                        <p>{{ ordem.observacoes }}</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'ordem_servico_list' %}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Voltar
+                </a>
+                <a href="{% url 'ordem_servico_imprimir' ordem.id %}" class="btn btn-primary float-right">
+                    <i class="fas fa-print"></i> Imprimir
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Clientes{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-primary text-white d-flex justify-content-between">
+        <h4>Clientes</h4>
+        <a href="{% url 'cliente_create' %}" class="btn btn-light">Novo Cliente</a>
+    </div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Telefone</th>
+                    <th>Celular</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cliente in clientes %}
+                <tr>
+                    <td>{{ cliente.nome }} {{ cliente.sobrenome }}</td>
+                    <td>{{ cliente.telefone|default:"-" }}</td>
+                    <td>{{ cliente.celular|default:"-" }}</td>
+                    <td>
+                        <a href="{% url 'cliente_update' cliente.pk %}" class="btn btn-sm btn-primary">Editar</a>
+                        <!-- Adicione mais ações se necessário -->
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">Nenhum cliente cadastrado</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

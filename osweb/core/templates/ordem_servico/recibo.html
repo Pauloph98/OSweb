@@ -1,0 +1,50 @@
+<!-- core/templates/ordem_servico/recibo.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recibo de Entrega</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2cm; }
+        .header { text-align: center; margin-bottom: 20px; }
+        .content { margin: 30px 0; }
+        .footer { margin-top: 50px; border-top: 1px solid #000; padding-top: 20px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        table, th, td { border: 1px solid #000; }
+        th, td { padding: 10px; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>{{ empresa.nome_fantasia }}</h2>
+        <p>{{ empresa.usuario.endereco }}</p>
+        <p>CNPJ: {{ empresa.cnpj }}</p>
+        <h3>RECIBO DE ENTREGA</h3>
+    </div>
+
+    <div class="content">
+        <p><strong>Cliente:</strong> {{ ordem.cliente.nome }} {{ ordem.cliente.sobrenome }}</p>
+        <p><strong>Endereço:</strong> {{ ordem.cliente.endereco }}</p>
+        <p><strong>Telefone:</strong> {{ ordem.cliente.telefone|default:"-" }}</p>
+        
+        <table>
+            <tr>
+                <th>Equipamento</th>
+                <th>Descrição do Serviço</th>
+                <th>Valor</th>
+            </tr>
+            <tr>
+                <td>{{ ordem.equipamento.tipo }} - {{ ordem.equipamento.marca }} {{ ordem.equipamento.modelo }}</td>
+                <td>{{ ordem.descricao_servico }}</td>
+                <td>R$ {{ ordem.valor_servico }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="footer">
+        <p>Data de Entrega: {{ ordem.data_entrega|date:"d/m/Y" }}</p>
+        <p>_________________________________________</p>
+        <p>Assinatura do Responsavel</p>
+        <p>Nome: _______________________________</p>
+    </div>
+</body>
+</html>

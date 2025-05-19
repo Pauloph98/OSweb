@@ -1,0 +1,29 @@
+<!-- ordem_servico/editar.html -->
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h4>Editar Ordem de Serviço #{{ object.id }}</h4>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <a href="{% url 'ordem_servico_list' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+        
+        {% if object.recibo_entrega %}
+        <div class="mt-4">
+            <a href="{{ object.recibo_entrega.url }}" class="btn btn-success" target="_blank">
+                <i class="fas fa-file-pdf"></i> Baixar Recibo de Entrega
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Cadastrar Nova Ordem de Serviço</h2>
+    
+    <form method="post" id="osForm">
+        {% csrf_token %}
+        
+        <div class="card mb-3">
+            <div class="card-header bg-light">Dados Básicos</div>
+            <div class="card-body">
+                {{ form.cliente|as_crispy_field }}
+                {{ form.data_entrada|as_crispy_field }}
+            </div>
+        </div>
+        
+        <div class="card mb-3">
+            <div class="card-header bg-light">Equipamento</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form.tipo_equipamento|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.marca_equipamento|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form.modelo_equipamento|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.numero_serie_equipamento|as_crispy_field }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-3">
+            <div class="card-header bg-light">Detalhes</div>
+            <div class="card-body">
+                {{ form.acessorios|as_crispy_field }}
+                {{ form.observacoes|as_crispy_field }}
+            </div>
+        </div>
+        
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="submit" class="btn btn-primary me-md-2">
+                <i class="fas fa-save"></i> Salvar
+            </button>
+            <a href="{% url 'ordem_servico_list' %}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

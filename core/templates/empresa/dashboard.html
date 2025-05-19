@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4>Dashboard - {{ empresa.nome_fantasia }}</h4>
+        <!-- Card de ações rápidas -->
+        <div class="card">
+            <div class="card-header bg-secondary text-white">
+                <h5>Ações Rápidas</h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group">
+                    <a href="{% url 'editar_empresa' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-building mr-2"></i> Alterar dados da empresa
+                    </a>
+                    <a href="{% url 'cliente_create' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-user-plus mr-2"></i> Cadastrar novo cliente
+                    </a>
+                    <a href="{% url 'ordem_servico_create' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-file-alt mr-2"></i> Criar nova ordem de serviço
+                    </a>
+                    {% if user.is_empresa %}
+                    <a href="{% url 'cadastrar_tecnico' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-user-tie mr-2"></i> Cadastrar novo técnico
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card text-white bg-info mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Clientes</h5>
+                                <p class="card-text display-4">{{ clientes_count }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-white bg-success mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Ordens de Serviço</h5>
+                                <p class="card-text display-4">{{ ordens_count }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+{% endblock %}

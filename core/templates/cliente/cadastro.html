@@ -26,6 +26,18 @@
                         <label for="id_sobrenome">Sobrenome:</label>
                         {{ form.sobrenome }}
                     </div>
+                    <div class="form-group">
+                        <label for="id_email">Email:</label>
+                        {{ form.email }}   
+                    </div>
+                    <div class="form-group">
+                        <label for="id_cpf_cnpj">CPF ou CNPJ:</label>
+                        {{ form.cpf_cnpj }}
+                        {% if form.cpf_cnpj.errors %}
+                        <div class="invalid-feedback d-block">
+                        {{ form.cpf_cnpj.errors }}
+                        {% endif %}
+                    </div>
                     
                     <div class="form-group">
                         <label for="id_endereco">Endereço:</label>

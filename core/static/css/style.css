@@ -1,15 +1,22 @@
 /* Estilos gerais */
 body {
     background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: #000;
 }
 
 .card {
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
     margin-bottom: 20px;
+    border-radius: 5px;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
 }
 
 .card-header {
     font-weight: bold;
+    background-color: #f8f9fa;
 }
 
 /* Navbar */
@@ -46,12 +53,10 @@ body {
     .no-print {
         display: none;
     }
-    
     body {
         background-color: white;
         color: black;
     }
-    
     .card {
         box-shadow: none;
         border: none;
@@ -103,14 +108,15 @@ body {
     border-radius: 50%;
 }
 
-input:checked + .slider {
+.switch input:checked + .slider {
     background-color: #2196F3;
 }
 
-input:checked + .slider:before {
+.switch input:checked + .slider:before {
     transform: translateX(26px);
 }
-/* Adicione ao seu arquivo style.css */
+
+/* Novo Equipamento */
 #novoEquipamento {
     margin-top: 20px;
     padding: 15px;
@@ -119,23 +125,10 @@ input:checked + .slider:before {
     border: 1px solid #dee2e6;
 }
 
-.card {
-    margin-bottom: 20px;
-}
-
-.card-header {
-    font-weight: bold;
-    background-color: #f8f9fa;
-}
+/* Layout de impressão */
 @page {
     size: A4;
     margin: 2cm;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    font-size: 12px;
-    color: #000;
 }
 
 .header {

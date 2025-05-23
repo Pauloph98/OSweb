@@ -4,17 +4,9 @@
 <div class="container mt-4">
     <div class="card">
         <div class="card-header">
-            <h3>Cadastrar Novo Técnico</h3>
+            <h3>Editar Técnico: {{ tecnico.get_full_name }}</h3>
         </div>
         <div class="card-body">
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-            
             <form method="post">
                 {% csrf_token %}
                 
@@ -41,19 +33,16 @@
                                     {% endfor %}
                                 </div>
                             {% endif %}
-                            {% if field.help_text %}
-                                <small class="form-text text-muted">{{ field.help_text }}</small>
-                            {% endif %}
                         </div>
                     {% endfor %}
                 </div>
                 
                 <div class="mt-3">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Cadastrar Técnico
+                        <i class="fas fa-save"></i> Salvar Alterações
                     </button>
                     <a href="{% url 'listar_tecnicos' %}" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i> Voltar
+                        <i class="fas fa-arrow-left"></i> Cancelar
                     </a>
                 </div>
             </form>
@@ -66,10 +55,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         {% for field in form %}
             {% if field.errors %}
-                var el = document.getElementById('{{ field.id_for_label }}');
-                if (el) {
-                    el.classList.add('is-invalid');
-                }
+                document.getElementById('{{ field.id_for_label }}').classList.add('is-invalid');
             {% endif %}
         {% endfor %}
     });

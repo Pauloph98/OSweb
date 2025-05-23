@@ -4,9 +4,7 @@ from django.contrib.auth import views as auth_views
 from .views import (
     ClienteListView, ClienteCreateView, ClienteUpdateView, 
     EquipamentoCreateView, OrdemServicoListView,
-    OrdemServicoCreateView, OrdemServicoUpdateView,
-    
-    OrdemServicoDetailView
+    OrdemServicoCreateView, OrdemServicoUpdateView,TecnicoListView, OrdemServicoDetailView,
 )
 
 urlpatterns = [
@@ -14,11 +12,13 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     # Empresa URLs
+    path('tecnicos/', TecnicoListView.as_view(), name='listar_tecnicos'),
     path('empresa/editar/', views.editar_empresa, name='editar_empresa'),
     path('empresa/cadastro/', views.empresa_registration, name='empresa_registration'),
     path('empresa/dashboard/', views.empresa_dashboard, name='empresa_dashboard'),
     path('empresa/tecnico/cadastro/', views.cadastrar_tecnico, name='cadastrar_tecnico'),
     path('empresa/observacao/', views.atualizar_observacao, name='atualizar_observacao'),
+    path('tecnicos/editar/<int:pk>/', views.editar_tecnico, name='editar_tecnico'),
     
     # Cliente URLs
     path('cliente/', ClienteListView.as_view(), name='cliente_list'),
@@ -37,4 +37,6 @@ urlpatterns = [
 
     path('ordem-servico/<int:pk>/', OrdemServicoDetailView.as_view(), name='ordem_servico_detail'),
     path('ordem-servico/<int:pk>/imprimir/', views.ordem_servico_imprimir, name='ordem_servico_imprimir'),
+    path('ordem-servico/<int:pk>/imprimir/', views.ordem_servico_imprimir, name='ordem_servico_imprimir'),
+    path('ordem-servico/<int:pk>/', views.OrdemServicoDetailView.as_view(), name='ordem_servico_detalhe'),
 ]

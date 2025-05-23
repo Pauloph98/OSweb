@@ -15,6 +15,14 @@
         
         <div class="card">
             <div class="card-body">
+                <form method="get" class="form-inline mb-3">
+                    <input type="text" name="q" class="form-control mr-2" placeholder="Buscar por número ou cliente"
+                    value="{{ request.GET.q }}">
+                    <button type="submit" class="btn btn-outline-primary">
+                        <i class="fas fa-search"></i> Buscar
+                    </button>
+                </form>
+                
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
@@ -68,6 +76,49 @@
                         {% endfor %}
                     </tbody>
                 </table>
+
+                <!-- Paginação correta (apenas uma vez, no final da tabela) -->
+                <nav aria-label="Paginação de ordens de serviço">
+                    <ul class="pagination justify-content-center">
+                        {% if ordens.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?q={{ request.GET.q }}&page=1">&laquo; Primeira</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?q={{ request.GET.q }}&page={{ ordens.previous_page_number }}">Anterior</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled"><span class="page-link">&laquo; Primeira</span></li>
+                            <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+                        {% endif %}
+
+                        {% for num in ordens.paginator.page_range %}
+                            {% if num >= ordens.number|add:'-2' and num <= ordens.number|add:'2' %}
+                                {% if ordens.number == num %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ num }}</span>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?q={{ request.GET.q }}&page={{ num }}">{{ num }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if ordens.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?q={{ request.GET.q }}&page={{ ordens.next_page_number }}">Próxima</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?q={{ request.GET.q }}&page={{ ordens.paginator.num_pages }}">Última &raquo;</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled"><span class="page-link">Próxima</span></li>
+                            <li class="page-item disabled"><span class="page-link">Última &raquo;</span></li>
+                        {% endif %}
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>

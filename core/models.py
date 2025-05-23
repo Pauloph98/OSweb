@@ -68,6 +68,8 @@ class Cliente(models.Model):
     endereco = models.CharField(max_length=200)
     telefone = models.CharField(max_length=15, blank=True, null=True)
     celular = models.CharField(max_length=15, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)        # opcional
+    cpf_cnpj = models.CharField(max_length=18, blank=True, null=True)
     
     def __str__(self):
         return f"{self.nome} {self.sobrenome}"
@@ -79,16 +81,16 @@ class Equipamento(models.Model):
     tipo = models.CharField(max_length=100)
     marca = models.CharField(max_length=100)
     modelo = models.CharField(max_length=100)
-    numero_serie = models.CharField(max_length=100, unique=True)
+    numero_serie = models.CharField(max_length=100)
     def __str__(self):
-        return f"{self.modelo} - {self.numero_serie}"
+        return f"{self.nome} - {self.marca} {self.modelo}"
 
 class OrdemServico(models.Model):
     STATUS_CHOICES = [
         ('AGUARDANDO', 'Aguardando orçamento'),
+        ('EM_ANDAMENTO', 'Aguardando aprovação'),
         ('APROVADO', 'Orçamento aprovado'),
         ('RECUSADO', 'Orçamento recusado'),
-        ('EM_ANDAMENTO', 'Em andamento'),
         ('CONCLUIDO', 'Concluído'),
         ('ENTREGUE', 'Equipamento entregue'),
     ]

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Técnicos Cadastrados</h2>
+    
+    <div class="mb-3">
+        <a href="{% url 'cadastrar_tecnico' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Cadastrar Novo Técnico
+        </a>
+    </div>
+    
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Telefone</th>
+                    <th>Data de Cadastro</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tecnico in tecnicos %}
+                <tr>
+                    <td>{{ tecnico.get_full_name|default:tecnico.username }}</td>
+                    <td>{{ tecnico.email|default:"-" }}</td>
+                    <td>{{ tecnico.telefone|default:"-" }}</td>
+                    <td>{{ tecnico.date_joined|date:"d/m/Y" }}</td>
+                    <td>
+                        <a href="{% url 'editar_tecnico' tecnico.pk %}" class="btn btn-sm btn-warning">
+                            <i class="fas fa-edit"></i> Editar
+                        </a></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">Nenhum técnico cadastrado ainda.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -3,6 +3,12 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import User, Empresa, Cliente, Equipamento, OrdemServico
 
+def validar_cpf_cnpj(valor):
+    cpf_pattern = r'^\d{3}\.\d{3}\.\d{3}-\d{2}$'
+    cnpj_pattern = r'^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$'
+    if valor and not (re.match(cpf_pattern, valor) or re.match(cnpj_pattern, valor)):
+        raise forms.ValidationError("Informe um CPF ou CNPJ válido no formato correto.")
+
 class EmpresaRegistrationForm(UserCreationForm):
     nome_fantasia = forms.CharField(max_length=100)
     razao_social = forms.CharField(max_length=100)
@@ -85,19 +91,50 @@ class TecnicoRegistrationForm(UserCreationForm):
         if commit:
             user.save()
         return user
+    
+class TecnicoUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name', 'telefone', 'endereco']
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({'class': 'form-control'})
 
 class ClienteForm(forms.ModelForm):
+    email = forms.EmailField(required=False, label="Email")
+    endereco = forms.CharField(  # Adicione esta linha para sobrescrever o campo
+        max_length=200, 
+        required=False,  # Torna o campo não obrigatório
+        label="Endereço",
+        widget=forms.TextInput(attrs={'placeholder': 'Endereço (opcional)'})
+    )
+    cpf_cnpj = forms.CharField(
+        max_length=18,
+        required=False,
+        label="CPF ou CNPJ",
+        widget=forms.TextInput(attrs={'placeholder': 'CPF ou CNPJ'})
+    )
+    
     class Meta:
         model = Cliente
-        fields = ['nome', 'sobrenome', 'endereco', 'telefone', 'celular']
+        fields = ['nome', 'sobrenome', 'endereco', 'telefone', 'celular', 'email', 'cpf_cnpj']
         widgets = {
-            'telefone': forms.TextInput(attrs={'data-mask': '(00) 0000-0000'}),
-            'celular': forms.TextInput(attrs={'data-mask': '(00) 00000-0000'}),
+            'telefone': forms.TextInput(attrs={'placeholder': '(00) 0000-0000'}),
+            'celular': forms.TextInput(attrs={'placeholder': '(00) 00000-0000'}),
         }
-    
+
     def __init__(self, *args, **kwargs):
         empresa = kwargs.pop('empresa', None)
         super().__init__(*args, **kwargs)
+
+    def clean_cpf_cnpj(self):
+        cpf_cnpj = self.cleaned_data.get('cpf_cnpj')
+        if cpf_cnpj:  # Só valida se foi fornecido
+            validar_cpf_cnpj(cpf_cnpj)
+        return cpf_cnpj
+
         
 
 

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Recibos de Entrega</h2>
+    
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>OS</th>
+                    <th>Cliente</th>
+                    <th>Equipamento</th>
+                    <th>Data Entrega</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ordem in ordens %}
+                <tr>
+                    <td>#{{ ordem.id }}</td>
+                    <td>{{ ordem.cliente.nome }} {{ ordem.cliente.sobrenome }}</td>
+                    <td>{{ ordem.equipamento.tipo }} - {{ ordem.equipamento.marca }}</td>
+                    <td>{{ ordem.data_entrega|date:"d/m/Y" }}</td>
+                    <td>
+                        <a href="{% url 'visualizar_recibo' ordem.pk %}" class="btn btn-sm btn-primary" target="_blank">
+                            Visualizar
+                        </a>
+                        <a href="{% url 'visualizar_recibo' ordem.pk %}?download=true" class="btn btn-sm btn-secondary">
+                            Download
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">Nenhum recibo encontrado</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+</div>
+{% endblock %}

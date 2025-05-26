@@ -430,8 +430,8 @@ class OrdemServicoUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView
             ordem.data_recusa = timezone.now().date()
         elif novo_status == 'ENTREGUE':
             ordem.data_entrega = timezone.now().date()
-            # Gera o recibo PDF
-            return self.gerar_recibo(ordem)
+            # Gera e salva o recibo
+            self.gerar_e_salvar_recibo(ordem)
         
         # Atualiza quem modificou
         ordem.usuario_alteracao = self.request.user
@@ -439,7 +439,8 @@ class OrdemServicoUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView
         
         return super().form_valid(form)
 
-    def gerar_recibo(self, ordem):
+    def gerar_e_salvar_recibo(self, ordem):
+        """Gera o recibo PDF e salva no banco de dados"""
         # Renderiza o template do recibo
         html_string = render_to_string('ordem_servico/recibo.html', {
             'ordem': ordem,
@@ -450,13 +451,62 @@ class OrdemServicoUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView
         html = HTML(string=html_string)
         pdf = html.write_pdf()
         
-        # Salva o recibo no sistema (opcional)
+        # Salva o recibo no sistema
         from django.core.files.base import ContentFile
         from datetime import datetime
-        nome_arquivo = f"recibo_entrega_{ordem.id}_{datetime.now().strftime('%Y%m%d')}.pdf"
-        ordem.recibo_entrega.save(nome_arquivo, ContentFile(pdf), save=True)
+        nome_arquivo = f"recibo_entrega_{ordem.id}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
         
-        # Cria a resposta para download
-        response = HttpResponse(pdf, content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename={nome_arquivo}'
+        # Remove recibo antigo se existir
+        if ordem.recibo_entrega:
+            ordem.recibo_entrega.delete(save=False)
+        
+        # Salva o novo recibo
+        ordem.recibo_entrega.save(nome_arquivo, ContentFile(pdf), save=True)
+
+class RecibosListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    model = OrdemServico
+    template_name = 'ordem_servico/recibos_list.html'
+    context_object_name = 'ordens'
+    paginate_by = 10
+
+    def test_func(self):
+        return self.request.user.is_empresa or self.request.user.is_tecnico
+
+    def get_queryset(self):
+        if self.request.user.is_empresa:
+            return OrdemServico.objects.filter(
+                empresa=self.request.user.empresa_user,
+                recibo_entrega__isnull=False
+            ).order_by('-data_entrega')
+        elif self.request.user.is_tecnico:
+            return OrdemServico.objects.filter(
+                empresa=self.request.user.empresa,
+                recibo_entrega__isnull=False
+            ).order_by('-data_entrega')
+        return OrdemServico.objects.none()
+
+@login_required
+def visualizar_recibo(request, pk):
+    ordem = get_object_or_404(OrdemServico, pk=pk)
+    
+    # Verifica permissão
+    if not ((request.user.is_empresa and ordem.empresa == request.user.empresa_user) or 
+            (request.user.is_tecnico and ordem.empresa == request.user.empresa)):
+        return redirect('login')
+    
+    if not ordem.recibo_entrega:
+        messages.error(request, "Recibo não encontrado.")
+        return redirect('recibos_list')
+    
+    # Se for para download
+    if request.GET.get('download') == 'true':
+        response = HttpResponse(ordem.recibo_entrega.read(), content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename=recibo_{ordem.id}.pdf'
         return response
+    
+    # Se for para visualização no navegador
+    response = HttpResponse(ordem.recibo_entrega.read(), content_type='application/pdf')
+    response['Content-Disposition'] = f'inline; filename=recibo_{ordem.id}.pdf'
+    return response
+
+        

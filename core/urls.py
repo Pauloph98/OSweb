@@ -2,7 +2,8 @@ from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
 from .views import (
-    ClienteListView, ClienteCreateView, ClienteUpdateView, 
+
+    RecibosListView, visualizar_recibo, ClienteListView, ClienteCreateView, ClienteUpdateView, 
     EquipamentoCreateView, OrdemServicoListView,
     OrdemServicoCreateView, OrdemServicoUpdateView,TecnicoListView, OrdemServicoDetailView,
 )
@@ -19,6 +20,8 @@ urlpatterns = [
     path('empresa/tecnico/cadastro/', views.cadastrar_tecnico, name='cadastrar_tecnico'),
     path('empresa/observacao/', views.atualizar_observacao, name='atualizar_observacao'),
     path('tecnicos/editar/<int:pk>/', views.editar_tecnico, name='editar_tecnico'),
+    path('recibos/', RecibosListView.as_view(), name='recibos_list'),
+    path('recibo/<int:pk>/', visualizar_recibo, name='visualizar_recibo'),
     
     # Cliente URLs
     path('cliente/', ClienteListView.as_view(), name='cliente_list'),
